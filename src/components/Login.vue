@@ -5,14 +5,14 @@
         <img src="../assets/logo.png" alt="" />
       </div>
       <!-- 登录表单区域 -->
-      <el-form label-width="0px" class="login_form">
+      <el-form :model="loginForm" label-width="0px" class="login_form">
         <!-- 用户名 -->
         <el-form-item>
-          <el-input prefix-icon="el-icon-user"></el-input>
+          <el-input v-model="loginForm.username" prefix-icon="el-icon-user"></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item>
-          <el-input prefix-icon="el-icon-lock"></el-input>
+          <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password"></el-input>
         </el-form-item>
         <!-- 按钮区域 -->
         <el-form-item class="btns">
@@ -26,7 +26,15 @@
 
 <script>
 export default {
-
+  data () {
+    return {
+      // 登录表单的数据绑定对象
+      loginForm: {
+        username: '',
+        password: ''
+      }
+    }
+  }
 }
 </script>
 
