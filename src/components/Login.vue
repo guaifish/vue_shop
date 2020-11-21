@@ -5,13 +5,13 @@
         <img src="../assets/logo.png" alt="" />
       </div>
       <!-- 登录表单区域 -->
-      <el-form :model="loginForm" label-width="0px" class="login_form">
+      <el-form :model="loginForm" :rules="loginRules" label-width="0px" class="login_form">
         <!-- 用户名 -->
-        <el-form-item>
+        <el-form-item prop="username">
           <el-input v-model="loginForm.username" prefix-icon="el-icon-user"></el-input>
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password"></el-input>
         </el-form-item>
         <!-- 按钮区域 -->
@@ -32,6 +32,18 @@ export default {
       loginForm: {
         username: '',
         password: ''
+      },
+      // 表单的验证规则对象
+      loginRules: {
+        username: [
+          { required: true, message: '请输入登录名称', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在3到10个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '长度在6到15个字符', trigger: 'blur' }
+
+        ]
       }
     }
   }
