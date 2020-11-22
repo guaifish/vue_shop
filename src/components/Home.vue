@@ -11,13 +11,18 @@
     <!-- 页面主体区域 -->
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
+      <el-aside :width="isCollapse ? '64px' : '200px'">
         <!-- 侧边栏菜单区域 -->
+        <div class="toggle-button" @click="toggleCollapse">
+          |||
+        </div>
         <el-menu
           background-color="#373d41"
           text-color="#fff"
           active-text-color="#409BFF"
           unique-opened
+          :collapse="isCollapse"
+          :collapse-transition="false"
         >
           <!-- 一级菜单 -->
           <el-submenu :index="String(i)" v-for="(item, i) in menulist" :key="i">
@@ -63,6 +68,8 @@ export default {
         3: "el-icon-s-order",
         4: "el-icon-s-data",
       },
+      // 是否折叠菜单栏
+      isCollapse: false,
     }
   },
   created() {
@@ -78,6 +85,10 @@ export default {
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.menulist = res.data
     },
+    // 折叠展开菜单栏
+    toggleCollapse() {
+      this.isCollapse = !this.isCollapse
+    }
   },
 }
 </script>
@@ -107,7 +118,7 @@ export default {
 }
 
 .el-aside {
-  background-color: #333744;
+  background-color: #373d41;
 
   .el-menu {
     border-right: none;
@@ -120,5 +131,15 @@ export default {
 
 .home-container {
   height: 100%;
+}
+
+.toggle-button {
+  background-color: #373d41;
+  font-size: 10px;
+  line-height: 24px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.2em;
+  cursor: pointer;
 }
 </style>
