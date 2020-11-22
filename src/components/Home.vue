@@ -37,7 +37,6 @@
                 <span>导航一</span>
               </template>
             </el-menu-item>
-
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -49,10 +48,23 @@
 
 <script>
 export default {
+  data() {
+    return {
+      menulist: [],
+    }
+  },
+  created() {
+    this.getMenuList()
+  },
   methods: {
     logout() {
       window.sessionStorage.clear()
       this.$router.push("/login")
+    },
+    async getMenuList() {
+      const { data: res } = await this.$http.get("menus")
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.menulist = res.data
     },
   },
 }
