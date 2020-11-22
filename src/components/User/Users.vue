@@ -11,7 +11,7 @@
     <el-card class="box-card">
       <!-- 搜索与添加区域 -->
       <div style="margin-top: 15px">
-        <el-row gutter="20">
+        <el-row :gutter="20">
           <el-col :span="8">
             <el-input placeholder="请输入内容">
               <el-button slot="append" icon="el-icon-search"></el-button>
@@ -27,7 +27,33 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      // 获取用户列表的参数
+      queryInfo: {
+        query: "",
+        pagenum: 1,
+        pagesize: 2,
+      },
+      userList: [],
+      total: 0,
+    }
+  },
+  created() {
+    this.getUserList()
+  },
+  methods: {
+    async getUserList() {
+      const { data: res } = await this.$http.get("users", {
+        params: this.queryInfo,
+      })
+      if (res.meta.status !== 200) return this.$message.error("获取用户列表失败")
+      this.userList = res.data.users
+      this.total = res.data.total
+    },
+  },
+}
 </script>
 
 <style lang="less"  scoped>
