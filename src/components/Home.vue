@@ -16,25 +16,29 @@
         <el-menu
           background-color="#545c64"
           text-color="#fff"
-          active-text-color="#ffd04b"
+          active-text-color="#409BFF"
         >
           <!-- 一级菜单 -->
           <el-submenu :index="String(i)" v-for="(item, i) in menulist" :key="i">
             <!-- 一级菜单的模板区域 -->
             <template slot="title">
               <!-- 图标 -->
-              <i class="el-icon-location"></i>
+              <i :class="iconsList[i]"></i>
               <!-- 文本 -->
-              <span>{{item.authName}}</span>
+              <span>{{ item.authName }}</span>
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item :index="String(i)" v-for="(subItem, i) in item.children" :key="i">
+            <el-menu-item
+              :index="String(i)"
+              v-for="(subItem, i) in item.children"
+              :key="i"
+            >
               <template slot="title">
                 <!-- 图标 -->
-                <i class="el-icon-location"></i>
+                <i class="el-icon-menu"></i>
                 <!-- 文本 -->
-                <span>{{subItem.authName}}</span>
+                <span>{{ subItem.authName }}</span>
               </template>
             </el-menu-item>
           </el-submenu>
@@ -51,6 +55,13 @@ export default {
   data() {
     return {
       menulist: [],
+      iconsList: {
+        0: "el-icon-user-solid",
+        1: "el-icon-s-check",
+        2: "el-icon-s-goods",
+        3: "el-icon-s-order",
+        4: "el-icon-s-data",
+      },
     }
   },
   created() {
