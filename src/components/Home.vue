@@ -13,9 +13,7 @@
       <!-- 侧边栏 -->
       <el-aside :width="isCollapse ? '64px' : '200px'">
         <!-- 侧边栏菜单区域 -->
-        <div class="toggle-button" @click="toggleCollapse">
-          |||
-        </div>
+        <div class="toggle-button" @click="toggleCollapse">|||</div>
         <el-menu
           background-color="#373d41"
           text-color="#fff"
@@ -24,6 +22,7 @@
           :collapse="isCollapse"
           :collapse-transition="false"
           router
+          :default-active="activePath"
         >
           <!-- 一级菜单 -->
           <el-submenu :index="String(i)" v-for="(item, i) in menulist" :key="i">
@@ -40,6 +39,7 @@
               :index="'/' + subItem.path"
               v-for="(subItem, i) in item.children"
               :key="i"
+              @click="saveNavState('/' + subItem.path)"
             >
               <template slot="title">
                 <!-- 图标 -->
@@ -73,10 +73,13 @@ export default {
       },
       // 是否折叠菜单栏
       isCollapse: false,
+      // 被激活的链接地址
+      activePath: "",
     }
   },
   created() {
     this.getMenuList()
+    this.activePath = window.sessionStorage.getItem("activePath")
   },
   methods: {
     logout() {
@@ -91,7 +94,12 @@ export default {
     // 折叠展开菜单栏
     toggleCollapse() {
       this.isCollapse = !this.isCollapse
-    }
+    },
+    // 保存链接的激活状态
+    saveNavState(activePath) {
+      window.sessionStorage.setItem("activePath", activePath)
+      this.activePath = activePath
+    },
   },
 }
 </script>
