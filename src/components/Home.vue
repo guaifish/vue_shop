@@ -14,9 +14,10 @@
       <el-aside width="200px">
         <!-- 侧边栏菜单区域 -->
         <el-menu
-          background-color="#545c64"
+          background-color="#373d41"
           text-color="#fff"
           active-text-color="#409BFF"
+          unique-opened
         >
           <!-- 一级菜单 -->
           <el-submenu :index="String(i)" v-for="(item, i) in menulist" :key="i">
@@ -76,7 +77,6 @@ export default {
       const { data: res } = await this.$http.get("menus")
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.menulist = res.data
-      console.log(res)
     },
   },
 }
@@ -108,6 +108,10 @@ export default {
 
 .el-aside {
   background-color: #333744;
+
+  .el-menu {
+    border-right: none;
+  }
 }
 
 .el-main {
