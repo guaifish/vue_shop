@@ -23,6 +23,7 @@
           unique-opened
           :collapse="isCollapse"
           :collapse-transition="false"
+          router
         >
           <!-- 一级菜单 -->
           <el-submenu :index="String(i)" v-for="(item, i) in menulist" :key="i">
@@ -36,7 +37,7 @@
 
             <!-- 二级菜单 -->
             <el-menu-item
-              :index="String(i)"
+              :index="'/' + subItem.path"
               v-for="(subItem, i) in item.children"
               :key="i"
             >
