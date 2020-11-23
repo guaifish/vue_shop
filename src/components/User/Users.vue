@@ -97,7 +97,8 @@
         <el-dialog
           title="添加用户"
           :visible.sync="addDialogVisible"
-          width="30%"
+          width="50%"
+          @close="addDialogClosed"
         >
           <!-- 内容主体区域 -->
           <el-form
@@ -241,6 +242,10 @@ export default {
       this.$message.success("更新用户状态成功!")
       console.log(res)
     },
+    // 监听添加用户对话框的关闭事件
+    addDialogClosed() {
+      this.$refs.addFormRef.resetFields()
+    }
   },
 }
 </script>
