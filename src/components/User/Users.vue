@@ -50,13 +50,13 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" width="180px">
-            <template slot-scope="">
-              <!-- {{scope.row}} -->
+            <template slot-scope="scope">
               <!-- 修改按钮 -->
               <el-button
                 type="primary"
                 icon="el-icon-edit"
                 size="mini"
+                @click="showEditDialog(scope.row.id)"
               ></el-button>
               <!-- 删除按钮 -->
               <el-button
@@ -124,6 +124,42 @@
           <span slot="footer" class="dialog-footer">
             <el-button @click="addDialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="addUser">确 定</el-button>
+          </span>
+        </el-dialog>
+
+        <!-- 修改用户的对话框 -->
+        <el-dialog
+          title="修改用户"
+          :visible.sync="editDialogVisible"
+          width="50%"
+          @close="addDialogClosed"
+        >
+          <!-- 内容主体区域 -->
+          <el-form
+            :model="addForm"
+            :rules="addFormRules"
+            ref="addFormRef"
+            label-width="70px"
+          >
+            <el-form-item label="用户名" prop="username">
+              <el-input v-model="addForm.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+              <el-input v-model="addForm.password"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="email">
+              <el-input v-model="addForm.email"></el-input>
+            </el-form-item>
+            <el-form-item label="手机" prop="mobile">
+              <el-input v-model="addForm.mobile"></el-input>
+            </el-form-item>
+          </el-form>
+          <!-- 底部区域 -->
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="editDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="editDialogVisible = false"
+              >确 定</el-button
+            >
           </span>
         </el-dialog>
       </div>
@@ -203,6 +239,10 @@ export default {
           { validator: checkMobile, trigger: "blur" },
         ],
       },
+      // 控制修改用户对话框的显示与隐藏
+      editDialogVisible: false,
+      // 查询到的用户信息对象
+      editForm: {},
     }
   },
   created() {
@@ -263,6 +303,16 @@ export default {
         this.addDialogVisible = false
         this.getUserList()
       })
+    },
+    // 展示编辑用户的对话框
+    async showEditDialog(id) {
+      const { data: res } = await this.$http.get("users/" + id)
+      console.log(res)
+      if (res.meta.status !== 200) {
+        return this.$message.error("查询用户信息失败!")
+      }
+      this.editForm = res.data
+      this.editDialogVisible = true
     },
   },
 }
