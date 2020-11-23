@@ -132,26 +132,22 @@
           title="修改用户"
           :visible.sync="editDialogVisible"
           width="50%"
-          @close="addDialogClosed"
         >
           <!-- 内容主体区域 -->
           <el-form
-            :model="addForm"
-            :rules="addFormRules"
-            ref="addFormRef"
+            :model="editForm"
+            :rules="editFormRules"
+            ref="editFormRef"
             label-width="70px"
           >
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="addForm.username"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="addForm.password"></el-input>
+            <el-form-item label="用户名">
+              <el-input v-model="editForm.username" disabled></el-input>
             </el-form-item>
             <el-form-item label="邮箱" prop="email">
-              <el-input v-model="addForm.email"></el-input>
+              <el-input v-model="editForm.email"></el-input>
             </el-form-item>
             <el-form-item label="手机" prop="mobile">
-              <el-input v-model="addForm.mobile"></el-input>
+              <el-input v-model="editForm.mobile"></el-input>
             </el-form-item>
           </el-form>
           <!-- 底部区域 -->
@@ -243,6 +239,17 @@ export default {
       editDialogVisible: false,
       // 查询到的用户信息对象
       editForm: {},
+      // 修改用户表单的验证规则对象
+      editFormRules: {
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+          { validator: checkEmail, trigger: "blur" },
+        ],
+        mobile: [
+          { required: true, message: "请输入手机", trigger: "blur" },
+          { validator: checkMobile, trigger: "blur" },
+        ],
+      },
     }
   },
   created() {
@@ -307,7 +314,6 @@ export default {
     // 展示编辑用户的对话框
     async showEditDialog(id) {
       const { data: res } = await this.$http.get("users/" + id)
-      console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error("查询用户信息失败!")
       }
